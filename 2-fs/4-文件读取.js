@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // 异步读取
-fs.readFile('./座右铭.txt',(err, data) => {
+fs.readFile('./res/测试文本.txt',(err, data) => {
     if(err){
         console.log('读取失败');
         return ;
@@ -11,5 +11,5 @@ fs.readFile('./座右铭.txt',(err, data) => {
 })
 
 // 同步读取
-let data = fs.readFileSync('./座右铭.txt');
+let data = fs.readFileSync('./res/测试文本.txt','utf8');
 console.log(data)

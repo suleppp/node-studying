@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // 创建读取流对象
-const rs = fs.createReadStream('./座右铭.txt');
+const rs = fs.createReadStream('./测试文本.txt');
 
 // 绑定data事件
 rs.on('data',chunk => {
