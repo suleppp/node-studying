@@ -16,7 +16,8 @@ async function createDevice(request, reply) {
 }
 
 async function queryDeviceList(request, reply) {
-
+    const apikey = request.query.apikey;
+    reply.success(await deviceService.queryDeviceList(apikey));
 }
 
 async function queryDeviceState(request, reply) {

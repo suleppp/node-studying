@@ -19,4 +19,18 @@ async function createDevice(param) {
     }
 }
 
-module.exports = {createDevice};
+async function queryDeviceList(apikey) {
+    const data = await device.find({apikey: apikey});
+    const result = {
+        devices: {}
+    };
+    for(let ele of data) {
+        result.devices[ele.deviceid] = {
+            online: ele.online,
+            state: ele.state
+        };
+    }
+    return result;
+}
+
+module.exports = {createDevice, queryDeviceList};
