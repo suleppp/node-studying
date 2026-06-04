@@ -7,3 +7,5 @@ class BusinessError extends Error {
 
 BusinessError.DEVICE_OFFLINE_ERROR_CODE = 10001;
 BusinessError.DEVICE_OFFLINE_ERROR_MSG = "设备离线"
+
+module.exports = BusinessError;

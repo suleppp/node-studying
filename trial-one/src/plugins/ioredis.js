@@ -8,6 +8,8 @@ const defaultOptions = {
     db: 0
 }
 
+// 因为require拿到的是Redis这个类，为了避免每次都new导致多个连接
+// 所以只new一次然后挂在fastify身上
 async function redisPlugin (fastify, options = defaultOptions) {
     try {
         const redis = new Redis(options);

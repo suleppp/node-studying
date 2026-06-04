@@ -3,12 +3,16 @@ const mongoPlugin = require('./plugins/ioredis');
 const redisPlugin = require('./plugins/mongo');
 const responsePlugin = require('./plugins/response');
 const {requestLogWithBody, /** requestLogWithoutBody,*/ responseLog} = require('./utils/logger');
+const deviceRoutes = require('./routes/device');
+const BusinessError = require('./errors/BusinessError');
+const AppError = require('./errors/AppError');
 
 const app = Fastify({logger: true});
 
 // 插件挂载
 app.register(mongoPlugin);
 app.register(redisPlugin);
+app.register(deviceRoutes, {prefix: '/api/devices'});
 
 // 全局错误处理，setErrorHandler只能设置一次
 app.setErrorHandler(async (error, request, reply) => {
@@ -39,9 +43,9 @@ app.setErrorHandler(async (error, request, reply) => {
 app.register(responsePlugin);
 
 // 日志钩子
-app.addHook("onRequest", async (request, reply) => {
-    requestLogWithoutBody(request, reply);
-})
+// app.addHook("onRequest", async (request, reply) => {
+//     requestLogWithoutBody(request, reply);
+// })
 
 app.addHook("preHandler", async (request, reply) => {
     requestLogWithBody(request, reply);

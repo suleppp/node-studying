@@ -1,3 +1,4 @@
+// require出来的本身就是一个实例，不需要new
 const mongoose = require('mongoose');
 const fp = require('fastify-plugin');
 
