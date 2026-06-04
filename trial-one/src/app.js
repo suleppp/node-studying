@@ -2,6 +2,7 @@ const Fastify = require('fastify')
 const mongoPlugin = require('./plugins/ioredis');
 const redisPlugin = require('./plugins/mongo');
 const responsePlugin = require('./plugins/response');
+const {requestLogWithBody, /** requestLogWithoutBody,*/ responseLog} = require('./utils/logger');
 
 const app = Fastify({logger: true});
 
@@ -36,6 +37,19 @@ app.setErrorHandler(async (error, request, reply) => {
 
 // 全局返回
 app.register(responsePlugin);
+
+// 日志钩子
+app.addHook("onRequest", async (request, reply) => {
+    requestLogWithoutBody(request, reply);
+})
+
+app.addHook("preHandler", async (request, reply) => {
+    requestLogWithBody(request, reply);
+})
+
+app.addHook("onSend", async (request, reply, payload) => {
+    responseLog(request, reply, payload);
+})
 
 async function start () {
     try {
