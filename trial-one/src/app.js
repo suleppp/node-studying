@@ -24,7 +24,7 @@ app.setErrorHandler(async (error, request, reply) => {
         })
     }
     else if (error instanceof AppError) {
-        reply.code(error.error).send({
+        reply.send({//
             error: error.error,
             msg: error.message,
             data: {}
