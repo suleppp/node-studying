@@ -66,4 +66,11 @@ async function changeDeviceState(param) {
     return result;
 }
 
-module.exports = {createDevice, queryDeviceList, queryDeviceState, changeDeviceState};
+async function deleteDevice(apikey, deviceid) {
+    const data = await device.deleteOne({apikey, deviceid});
+    if(data.deletedCount === 0) {
+        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+    }
+}
+
+module.exports = {createDevice, queryDeviceList, queryDeviceState, changeDeviceState, deleteDevice};

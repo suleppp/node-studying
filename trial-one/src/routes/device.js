@@ -31,7 +31,8 @@ async function changeDeviceState(request, reply) {
 }
 
 async function deleteDevice(request, reply) {
-
+    const {apikey, deviceid} = request.query;
+    reply.success(await deviceService.deleteDevice(apikey, deviceid));
 }
 
 module.exports = deviceRoutes;
