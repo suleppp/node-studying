@@ -33,4 +33,37 @@ async function queryDeviceList(apikey) {
     return result;
 }
 
-module.exports = {createDevice, queryDeviceList};
+async function queryDeviceState(apikey, deviceid) {
+    const data = await device.findOne({apikey, deviceid});
+    if(!data) {
+        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+    }
+    if(data.online === false) {
+        throw new BusinessError(BusinessError.DEVICE_OFFLINE_ERROR_CODE, BusinessError.DEVICE_OFFLINE_ERROR_MSG);
+    }
+    const result = {};
+    result.state = data.state;
+    return result;
+}
+
+async function changeDeviceState(param) {
+    const {apikey, deviceid, state} = param;
+    const updated = await device.findOneAndUpdate(
+        {apikey, deviceid},
+        {
+            $set: {state: state}
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+    if (!updated) {
+        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+    }
+    const result = {};
+    result.deviceid = updated.deviceid;
+    return result;
+}
+
+module.exports = {createDevice, queryDeviceList, queryDeviceState, changeDeviceState};

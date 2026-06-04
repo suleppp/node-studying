@@ -21,11 +21,13 @@ async function queryDeviceList(request, reply) {
 }
 
 async function queryDeviceState(request, reply) {
-
+    const {apikey, deviceid} = request.query;
+    reply.success(await deviceService.queryDeviceState(apikey, deviceid));
 }
 
 async function changeDeviceState(request, reply) {
-
+    const {apikey, deviceid, state} = request.body;
+    reply.success(await deviceService.changeDeviceState({apikey, deviceid, state}));
 }
 
 async function deleteDevice(request, reply) {
