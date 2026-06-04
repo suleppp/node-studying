@@ -59,6 +59,7 @@ async function start () {
     try {
         await app.listen({port: 3000});
         console.log("服务启动成功：http://localhost:3000");
+        console.log("本地日志：C:/Users/yigan/AppData/Local/Temp/logger.log")
     } catch (error) {
         console.error("服务启动失败：", error.message);
     }

@@ -49,7 +49,7 @@ function responseLog(request, reply, payload) {
 
 
 function writeLog(content) {
-    fs.appendFile(logPath, content, err => {
+    fs.appendFile(logPath, content + os.EOL, err => {
         if (err) {
             console.log(err);
         }
