@@ -1,10 +1,8 @@
 const deviceService = require('../services/deviceService');
 
 /**
- * 
- * @param {*} request 
- * @param {*} reply 
- * @returns 
+ * 通过apikey查询设备列表
+ * @param {string} request.body.apikey 用户唯一标识   
  */
 async function queryDeviceList(request, reply) {
     const apikey = request.query.apikey;

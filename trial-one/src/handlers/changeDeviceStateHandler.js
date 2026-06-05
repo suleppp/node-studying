@@ -1,5 +1,11 @@
 const deviceService = require('../services/deviceService');
 
+/**
+ * 改变设备状态
+ * @param {string} request.body.apikey 用户唯一标识 
+ * @param {string} request.body.deviceid 设备id
+ * @param {object} request.body.state 设备状态  
+ */
 async function changeDeviceState(request, reply) {
     const {apikey, deviceid, state} = request.body;
     const ret = await deviceService.changeDeviceState(apikey, deviceid, state);
