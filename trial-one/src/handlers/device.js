@@ -3,29 +3,47 @@ const deviceService = require('../services/deviceService');
 async function createDevice(request, reply) {
     const {apikey, deviceid, online, state} = request.body;
     const param = {apikey, deviceid, online, state};
-    await deviceService.createDevice(param);
-    reply.success();
+    const ret = await deviceService.createDevice(param);
+    if(ret.success) {
+        return reply.success(ret.data);
+    }
+    return reply.fail(ret.code, ret.msg);
 }
 
 async function queryDeviceList(request, reply) {
     const apikey = request.query.apikey;
-    reply.success(await deviceService.queryDeviceList(apikey));
+    const ret = await deviceService.queryDeviceList(apikey)
+    if(ret.success) {
+        return reply.success(ret.data);
+    }
+    return reply.fail(ret.code, ret.msg);
 }
 
 async function queryDeviceState(request, reply) {
     const {apikey, deviceid} = request.query;
-    reply.success(await deviceService.queryDeviceState(apikey, deviceid));
+    const ret = await deviceService.queryDeviceState(apikey, deviceid);
+    if(ret.success) {
+        return reply.success(ret.data);
+    }
+    return reply.fail(ret.code, ret.msg);
 }
 
 async function changeDeviceState(request, reply) {
     const {apikey, deviceid, state} = request.body;
-    const data = await deviceService.changeDeviceState(apikey, deviceid, state);
-    reply.success(data);
+    const ret = await deviceService.changeDeviceState(apikey, deviceid, state);
+    if(ret.success) {
+        return reply.success(ret.data);
+    }
+    return reply.fail(ret.code, ret.msg);
 }
 
 async function deleteDevice(request, reply) {
     const {apikey, deviceid} = request.query;
-    reply.success(await deviceService.deleteDevice(apikey, deviceid));
+    const ret = await deviceService.deleteDevice(apikey, deviceid)
+    if(ret.success) {
+        return reply.success(ret.data);
+    }
+    return reply.fail(ret.code, ret.msg);
 }
 
 // ===== Schema =====
