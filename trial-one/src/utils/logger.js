@@ -29,10 +29,10 @@ function requestLogWithBody(request, reply) {
     const time = getTime();
     const interfacePath = request.url;
     const method = request.method;
-    const headers = request.headers;
+    const headers = JSON.stringify(request.headers);
     const body = JSON.stringify(request.body);
-    const other = '';
-    const format = `[${time}]rec request: <${interfacePath}> - <${method}> - <${headers}> - <${body}> - <${other}>`;
+    const reqId = request.id;
+    const format = `[${time}] rec request: <${interfacePath}> - <${method}> - <${headers}> - <${body}> - reqId: ${reqId}`;
     writeLog(format);
 }
 
@@ -42,8 +42,8 @@ function responseLog(request, reply, payload) {
     const headers = JSON.stringify(reply.getHeaders());
 
     const body = payload || '';
-    const other = '';
-    const format = `[${time}]send response: <${code}> - <${body}> - <${headers}> - <${other}>`;
+    const reqId = request.id;
+    const format = `[${time}]send response: <${code}> - <${body}> - <${headers}> - reqId: ${reqId}`;
     writeLog(format)
 }
 

@@ -17,26 +17,16 @@ app.register(deviceRoutes, {prefix: '/api/devices'});
 // 全局错误处理，setErrorHandler只能设置一次
 app.setErrorHandler(async (error, request, reply) => {
     if (error instanceof BusinessError) {
-        reply.send({
-            error: error.error,
-            msg: error.message,
-            data: {}
-        })
+        reply.send({error: error.error, msg: error.message, data: {}});
+    } else if (error instanceof AppError) {
+        reply.code(error.error).send({error: error.error, msg: error.message, data: {}});
+    } else if (error instanceof DataError) {
+        reply.code(500).send({error: 500, msg: error.message, data: {}});
+    } else if (error.statusCode === 400) {
+        reply.code(400).send({error: 400, msg: '参数错误', data: {}});
+    } else {
+        reply.code(500).send({error: 500, msg: error.message || '未知错误', data: {}});
     }
-    else if (error instanceof AppError) {
-        reply.send({//
-            error: error.error,
-            msg: error.message,
-            data: {}
-        })
-    }
-    else {
-        reply.send({
-            error: 500,
-            msg: error.message || "未知错误",
-            data: {}
-        })
-    } 
 });
 
 // 全局返回

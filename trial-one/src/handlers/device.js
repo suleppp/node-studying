@@ -44,8 +44,8 @@ async function queryDeviceState(request, reply) {
 
 async function changeDeviceState(request, reply) {
     const {apikey, deviceid, state} = request.body;
-    const ret = await deviceService.changeDeviceState({apikey, deviceid, state});
-    reply.success();
+    const data = await deviceService.changeDeviceState({apikey, deviceid, state});
+    reply.success(data);
 }
 
 async function deleteDevice(request, reply) {
