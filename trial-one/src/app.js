@@ -18,7 +18,10 @@ app.register(deviceRoutes, {prefix: '/api/devices'});
 // 全局错误处理，setErrorHandler只能设置一次
 app.setErrorHandler(async (error, request, reply) => {
     console.log("【全局错误】", error);
-    if (error.statusCode === 400) {
+    if (error.statusCode === 415) {
+        reply.code(415).send({error: 415, msg: '请求头校验错误', data: {}});
+    }
+    else if (error.statusCode === 400) {
         reply.code(400).send({error: 400, msg: '参数错误', data: {}});
     } else {
         reply.code(500).send({error: 500, msg: error.message || '未知错误', data: {}});

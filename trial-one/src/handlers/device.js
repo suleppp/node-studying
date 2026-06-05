@@ -47,8 +47,19 @@ async function deleteDevice(request, reply) {
 }
 
 // ===== Schema =====
+const headers = {
+    type: 'object',
+    required: ['content-type'],
+    properties: {
+        'content-type': {
+            type: 'string',
+            pattern: 'application/json'
+        }
+    }
+}
 
 const createDeviceSchema = {
+    headers,
     body: {
         type: 'object',
         required: ['apikey', 'deviceid', 'online', 'state'],
@@ -62,6 +73,7 @@ const createDeviceSchema = {
 }
 
 const queryDeviceListSchema = {
+    headers,
     querystring: {
         type: 'object',
         required: ['apikey'],
@@ -72,6 +84,7 @@ const queryDeviceListSchema = {
 }
 
 const queryDeviceStateSchema = {
+    headers,
     querystring: {
         type: 'object',
         required: ['apikey', 'deviceid'],
@@ -83,6 +96,7 @@ const queryDeviceStateSchema = {
 }
 
 const changeDeviceStateSchema = {
+    headers,
     body: {
         type: 'object',
         required: ['apikey', 'deviceid', 'state'],
@@ -95,6 +109,7 @@ const changeDeviceStateSchema = {
 }
 
 const deleteDeviceSchema = {
+    headers,
     querystring: {
         type: 'object',
         required: ['apikey', 'deviceid'],
