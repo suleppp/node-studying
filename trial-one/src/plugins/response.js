@@ -10,9 +10,13 @@ async function responsePlugin(fastify, options) {
         })
     });
 
-    这里throw出去的错误不能被全局异常处理器捕捉到
-    fastify.decorateReply('fail', function(error) {
-        throw error;
+    // 这里throw出去的错误不能被全局异常处理器捕捉到
+    fastify.decorateReply('fail', function(code, msg = "未知异常") {
+        this.code(200).send({
+            error: error,
+            msg: msg,
+            data: {}
+        })
     })
 }
 

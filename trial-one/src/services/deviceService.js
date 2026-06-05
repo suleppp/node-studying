@@ -5,51 +5,90 @@ const deviceRepo = require('../repositories/deviceRepo');
 
 
 async function createDevice(data) {
-    await deviceRepo.createDevice(data);
+    let ret = null;
+    try {
+        ret = await deviceRepo.createDevice(data);
+    } catch (err) {
+        return {success: false , code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
+    return {success: true, data: ret};
 }
 
 async function queryDeviceList(apikey) {
-    return await deviceRepo.findDeviceListByApikey(apikey);
+    let ret = null;
+    try {
+        ret = await deviceRepo.findDeviceListByApikey(apikey);
+    } catch (err) {
+        return {success: false , code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
+    return {success: true, data: ret};
 }
 
 async function queryDeviceState(apikey, deviceid) {
-    const data = await deviceRepo.findDeviceByDeviceid(deviceid);
+    let data = null;
+    try {
+        data = await deviceRepo.findDeviceByDeviceid(deviceid);
+    } catch (err) {
+        return {success: false , code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
+    
     if(!data) {
-        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+        return {success: false, code: AppError.NO_RESOURCES_ERROR_CODE, msg: AppError.NO_RESOURCES_ERROR_MSG};
     }
 
     if(data.apikey !== apikey) {
-        throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
+        return {success: false, code: AppError.FORBIDDEN_ERROR_CODE, msg: AppError.FORBIDDEN_ERROR_MSG};
     }
     
     if(data.online === false) {
-        throw new BusinessError(BusinessError.DEVICE_OFFLINE_ERROR_CODE, BusinessError.DEVICE_OFFLINE_ERROR_MSG);
+        return {success: false, code: BusinessError.DEVICE_OFFLINE_ERROR_CODE, msg: BusinessError.DEVICE_OFFLINE_ERROR_MSG};
     }
-    return {state: data.state};
+    return {success: true, data: {state: data.state}};
 }
 
 async function changeDeviceState(apikey, deviceid, state) {
-    const exist = await deviceRepo.findDeviceByDeviceid(deviceid);
+    let exist = null;
+    try {
+        exist = await deviceRepo.findDeviceByDeviceid(deviceid);
+    } catch (err) {
+        return {success: false, code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
     if(!exist) {
-        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+        return {success: false, code: AppError.NO_RESOURCES_ERROR_CODE, msg: AppError.NO_RESOURCES_ERROR_MSG};
     }
     if(exist.apikey !== apikey) {
-        throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
+        return {success: false, code: AppError.FORBIDDEN_ERROR_CODE, msg: AppError.FORBIDDEN_ERROR_MSG};
     }
-    const updated = await deviceRepo.updateDeviceState(deviceid, state);
-    return { deviceid: updated.deviceid };
+    let updated = null;
+    try {
+        updated = await deviceRepo.updateDeviceState(deviceid, state);
+    } catch (err) {
+        return {success: false, code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
+    return {success: true, data: {deviceid: updated.deviceid}};
 }
 
 
 async function deleteDevice(apikey, deviceid) {
-    const exist = await deviceRepo.findDeviceByDeviceid(deviceid);
+    let exist = null;
+    try {
+        exist = await deviceRepo.findDeviceByDeviceid(deviceid);
+    } catch (err) {
+        return {success: false, code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
     if(!exist) {
-        throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
+        return {success: false, code: AppError.NO_RESOURCES_ERROR_CODE, msg: AppError.NO_RESOURCES_ERROR_MSG};
     }
     if(exist.apikey !== apikey) {
-        throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
+        return {success: false, code: AppError.FORBIDDEN_ERROR_CODE, msg: AppError.FORBIDDEN_ERROR_MSG};
     }
-    await deviceRepo.deleteDevice(deviceid);
+
+    try {
+        await deviceRepo.deleteDevice(deviceid);
+    } catch (err) {
+        return {success: false, code: AppError.DATA_ERROR_CODE, msg: AppError.DATA_ERROR_MSG};
+    }
+    return {success: true, data: {}};
 }
 
 module.exports = {createDevice, queryDeviceList, queryDeviceState, changeDeviceState, deleteDevice};
