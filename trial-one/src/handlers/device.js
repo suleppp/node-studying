@@ -5,7 +5,7 @@ async function createDevice(request, reply) {
     const param = {apikey, deviceid, online, state};
     const ret = await deviceService.createDevice(param);
     if(ret.success) {
-        return reply.success(ret.data);
+        return reply.success({});
     }
     return reply.fail(ret.code, ret.msg);
 }
@@ -41,7 +41,7 @@ async function deleteDevice(request, reply) {
     const {apikey, deviceid} = request.query;
     const ret = await deviceService.deleteDevice(apikey, deviceid)
     if(ret.success) {
-        return reply.success(ret.data);
+        return reply.success({});
     }
     return reply.fail(ret.code, ret.msg);
 }

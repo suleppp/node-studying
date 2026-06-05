@@ -14,7 +14,7 @@ async function createDevice(data) {
         apikey: newDevice.apikey
     };
     try {
-        await redisUtil.setString(DEVICE_CACHE_KEY(newDevice.deviceid), cacheValue);
+        await redisUtil.setString(DEVICE_CACHE_KEY(newDevice.deviceid), cacheValue, 3600);
     } catch (err) {
         await mongoUtil.deleteOne(device, {deviceid: newDevice.deviceid});
         throw err;
@@ -44,7 +44,7 @@ async function findDeviceListByApikey(apikey) {
         };
     }
     try {
-        await redisUtil.setString(DEVICE_LIST_CACHE_KEY(apikey), result);
+        await redisUtil.setString(DEVICE_LIST_CACHE_KEY(apikey), result, 1800);
     } catch (err) {
         // 写缓存失败不影响后续返回
     }
@@ -71,7 +71,7 @@ async function findDeviceByDeviceid(deviceid) {
             state: doc.state
         };
         try {
-            await redisUtil.setString(DEVICE_CACHE_KEY(deviceid), cacheValue);
+            await redisUtil.setString(DEVICE_CACHE_KEY(deviceid), cacheValue, 3600);
         } catch (err){
             // 重构缓存失败，跳过
         }
@@ -91,7 +91,7 @@ async function updateDeviceState(deviceid, state) {
             online: updated.online,
             state: updated.state
         };
-        await redisUtil.setString(DEVICE_CACHE_KEY(deviceid), cacheValue);
+        await redisUtil.setString(DEVICE_CACHE_KEY(deviceid), cacheValue, 3600);
     }
     return updated;
 }

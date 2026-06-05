@@ -1,12 +1,13 @@
 const Redis = require('ioredis');
 const fp = require('fastify-plugin');
 const redisUtil = require('../utils/redisUtil');
+const process = require('process');
 
 // todo 后期修改为从环境中读取
 const defaultOptions = {
-    host: 'localhost',
-    port: 6379,
-    db: 0
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    db: process.env.REDIS_DB || 0
 }
 
 // 因为require拿到的是Redis这个类，为了避免每次都new导致多个连接

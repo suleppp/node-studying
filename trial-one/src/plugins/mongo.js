@@ -1,15 +1,16 @@
 // require出来的本身就是一个实例，不需要new
 const mongoose = require('mongoose');
 const fp = require('fastify-plugin');
+const process = require('process');
 
 // TODO URI和连接配置可以从环境变量中读取，不需要硬编码
 const defaultURI = 'mongodb://localhost:27017/trialOneDB';
 
 const defaultOptions = {
-    maxPoolSize: 50,
-    minPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    autoIndex: false,
+    maxPoolSize: process.env.MONGO_MAX_POOL_SIZE || 50,
+    minPoolSize: process.env.MONGO_MIN_POOL_SIZE|| 10,
+    serverSelectionTimeoutMS: process.env.MONGO_SERVER_SELECTION_TIMEOUT_MS|| 5000,
+    autoIndex: process.env.MONGO_AUTO_INDEX || false,
 }
 
 async function mongoPlugin(fastify, options = defaultOptions) {
