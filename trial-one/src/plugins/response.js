@@ -10,10 +10,10 @@ async function responsePlugin(fastify, options) {
         })
     });
 
-    // 这里throw出去的错误不能被全局异常处理器捕捉到
-    // fastify.decorateReply('fail', function(error) {
-    //     throw error;
-    // })
+    这里throw出去的错误不能被全局异常处理器捕捉到
+    fastify.decorateReply('fail', function(error) {
+        throw error;
+    })
 }
 
 module.exports = fp(responsePlugin);

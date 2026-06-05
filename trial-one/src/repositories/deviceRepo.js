@@ -9,7 +9,8 @@ async function createDevice(data) {
     const newDevice = await mongoUtil.create(device, data);
     const cacheValue = {
         online: newDevice.online,
-        state: newDevice.state
+        state: newDevice.state,
+        apikey: newDevice.apikey
     };
     await redisUtil.setString(DEVICE_CACHE_KEY(newDevice.deviceid), cacheValue);
     return newDevice;
@@ -25,7 +26,8 @@ async function findDeviceListByApikey(apikey) {
     for (let ele of list) {
         result.devices[ele.deviceid] = {
             online: ele.online,
-            state: ele.state
+            state: ele.state,
+            apikey: ele.apikey
         };
     }
     await redisUtil.setString(DEVICE_LIST_CACHE_KEY(apikey), result);
@@ -34,6 +36,7 @@ async function findDeviceListByApikey(apikey) {
 
 async function findDeviceByDeviceid(deviceid) {
     const cached = await redisUtil.getString(DEVICE_CACHE_KEY(deviceid));
+    console.log("【cache】", cached);
     if(cached) {
         return cached;
     }

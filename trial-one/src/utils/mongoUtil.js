@@ -4,6 +4,7 @@ async function create(model, data) {
     try {
         return await model.create(data);
     } catch (error) {
+        console.log("【mongo】",error)
         throw new DataError(DataError.MONGO_ERROR_CODE, "Mongo插入数据失败");
     }
 }

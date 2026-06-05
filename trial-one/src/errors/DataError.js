@@ -7,3 +7,5 @@ class DataError extends Error {
 
 DataError.REDIS_ERROR_CODE = 1000;
 DataError.MONGO_ERROR_CODE = 2000;
+
+module.exports = DataError;

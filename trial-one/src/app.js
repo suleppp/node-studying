@@ -6,6 +6,7 @@ const {requestLogWithBody, /** requestLogWithoutBody,*/ responseLog} = require('
 const deviceRoutes = require('./routes/device');
 const BusinessError = require('./errors/BusinessError');
 const AppError = require('./errors/AppError');
+const DataError = require('./errors/DataError');
 
 const app = Fastify({logger: true});
 

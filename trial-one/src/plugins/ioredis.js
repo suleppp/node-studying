@@ -1,5 +1,6 @@
 const Redis = require('ioredis');
 const fp = require('fastify-plugin');
+const redisUtil = require('../utils/redisUtil');
 
 // todo 后期修改为从环境中读取
 const defaultOptions = {
@@ -14,6 +15,7 @@ async function redisPlugin (fastify, options = defaultOptions) {
     try {
         const redis = new Redis(options);
         fastify.decorate('redis', redis);
+        redisUtil.initRedis(redis);
 
         // 事件监听
         redis.on("connect", () => {

@@ -1,29 +1,4 @@
-module.exports = {
-    createDevice: {
-        schema: createDeviceSchema,
-        handler: createDevice
-    },
-
-    queryDeviceList: {
-        schema: queryDeviceListSchema,
-        handler: queryDeviceList
-    },
-
-    queryDeviceState: {
-        schema: queryDeviceStateSchema,
-        handler: queryDeviceState
-    },
-
-    changeDeviceState: {
-        schema: changeDeviceStateSchema,
-        handler: changeDeviceState
-    },
-
-    deleteDevice: {
-        schema: deleteDeviceSchema,
-        handler: deleteDevice
-    }
-};
+const deviceService = require('../services/deviceService');
 
 async function createDevice(request, reply) {
     const {apikey, deviceid, online, state} = request.body;
@@ -44,7 +19,7 @@ async function queryDeviceState(request, reply) {
 
 async function changeDeviceState(request, reply) {
     const {apikey, deviceid, state} = request.body;
-    const data = await deviceService.changeDeviceState({apikey, deviceid, state});
+    const data = await deviceService.changeDeviceState(apikey, deviceid, state);
     reply.success(data);
 }
 
@@ -112,3 +87,29 @@ const deleteDeviceSchema = {
     }
 }
 
+module.exports = {
+    createDevice: {
+        schema: createDeviceSchema,
+        handler: createDevice
+    },
+
+    queryDeviceList: {
+        schema: queryDeviceListSchema,
+        handler: queryDeviceList
+    },
+
+    queryDeviceState: {
+        schema: queryDeviceStateSchema,
+        handler: queryDeviceState
+    },
+
+    changeDeviceState: {
+        schema: changeDeviceStateSchema,
+        handler: changeDeviceState
+    },
+
+    deleteDevice: {
+        schema: deleteDeviceSchema,
+        handler: deleteDevice
+    }
+};

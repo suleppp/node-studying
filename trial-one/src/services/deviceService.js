@@ -19,7 +19,7 @@ async function queryDeviceState(apikey, deviceid) {
     }
 
     if(data.apikey !== apikey) {
-        throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_CODE);
+        throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
     }
     
     if(data.online === false) {
@@ -33,7 +33,7 @@ async function changeDeviceState(apikey, deviceid, state) {
     if(!exist) {
         throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
     }
-    if(existing.apikey !== apikey) {
+    if(exist.apikey !== apikey) {
         throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
     }
     const updated = await deviceRepo.updateDeviceState(deviceid, state);
@@ -46,7 +46,7 @@ async function deleteDevice(apikey, deviceid) {
     if(!exist) {
         throw new AppError(AppError.NO_RESOURCES_ERROR_CODE, AppError.NO_RESOURCES_ERROR_MSG);
     }
-    if(existing.apikey !== apikey) {
+    if(exist.apikey !== apikey) {
         throw new AppError(AppError.FORBIDDEN_ERROR_CODE, AppError.FORBIDDEN_ERROR_MSG);
     }
     await deviceRepo.deleteDevice(deviceid);
