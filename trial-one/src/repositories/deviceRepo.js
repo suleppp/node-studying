@@ -19,6 +19,11 @@ async function createDevice(data) {
         await mongoUtil.deleteOne(device, {deviceid: newDevice.deviceid});
         throw err;
     }
+    try {
+        await redisUtil.delString(DEVICE_LIST_CACHE_KEY(newDevice.apikey));
+    } catch (err) {
+        // 忽略
+    }
     return newDevice;
 }
 
@@ -39,8 +44,7 @@ async function findDeviceListByApikey(apikey) {
     for (let ele of list) {
         result.devices[ele.deviceid] = {
             online: ele.online,
-            state: ele.state,
-            apikey: ele.apikey
+            state: ele.state
         };
     }
     try {
@@ -97,9 +101,13 @@ async function updateDeviceState(deviceid, state) {
 }
 
 async function deleteDevice(deviceid) {
+    const doc = await mongoUtil.findOne(device, {deviceid});
     await mongoUtil.deleteOne(device, {deviceid});
     try {
         await redisUtil.delString(DEVICE_CACHE_KEY(deviceid));
+        if(doc) {
+            await redisUtil.delString(DEVICE_LIST_CACHE_KEY(doc.apikey));
+        }
     } catch (err) {
         // 删失败，等ttl过期
     }

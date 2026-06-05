@@ -9,7 +9,12 @@ async function createDevice(request, reply) {
     }
     return reply.fail(ret.code, ret.msg);
 }
-
+/**
+ * 
+ * @param {*} request 
+ * @param {*} reply 
+ * @returns 
+ */
 async function queryDeviceList(request, reply) {
     const apikey = request.query.apikey;
     const ret = await deviceService.queryDeviceList(apikey)

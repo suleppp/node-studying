@@ -1,11 +1,16 @@
-const deviceHandler = require('../handlers/device');
+//const deviceHandler = require('../handlers/device');
+const { createDevice, createDeviceSchema } = require('../handlers/createDeviceHandler');
+const { queryDeviceList, queryDeviceListSchema } = require('../handlers/queryDeviceListHandler');
+const { changeDeviceState, changeDeviceStateSchema } = require('../handlers/changeDeviceStateHandler');
+const { queryDeviceState, queryDeviceStateSchema } = require('../handlers/queryDeviceStateHandler');
+const { deleteDevice, deleteDeviceSchema } = require('../handlers/deleteDeviceHandler');
 
 async function deviceRoutes(fastify, options) {
-    fastify.post('/', {schema: deviceHandler.createDevice.schema}, deviceHandler.createDevice.handler);
-    fastify.get('/list', {schema: deviceHandler.queryDeviceList.schema}, deviceHandler.queryDeviceList.handler);
-    fastify.get('/state', {schema: deviceHandler.queryDeviceState.schema}, deviceHandler.queryDeviceState.handler);
-    fastify.put('/state', {schema: deviceHandler.changeDeviceState.schema}, deviceHandler.changeDeviceState.handler);
-    fastify.delete('/', {schema: deviceHandler.deleteDevice.schema}, deviceHandler.deleteDevice.handler);
+    fastify.post('/', {schema: createDeviceSchema}, createDevice);
+    fastify.get('/list', {schema: queryDeviceListSchema}, queryDeviceList);
+    fastify.get('/state', {schema: queryDeviceStateSchema}, queryDeviceState);
+    fastify.put('/state', {schema: changeDeviceStateSchema}, changeDeviceState);
+    fastify.delete('/', {schema: deleteDeviceSchema}, deleteDevice);
 }
 
 module.exports = deviceRoutes;
