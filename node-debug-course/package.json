@@ -1,0 +1,31 @@
+{
+  "name": "node-debug-course",
+  "version": "1.0.0",
+  "private": true,
+  "description": "从 Node.js 程序运行原理到真实项目调试的自学课程",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "check": "node scripts/check-course.js",
+    "process": "node examples/01-process/app.js",
+    "startup": "node examples/02-startup/app.js",
+    "order": "node examples/03-order/app.js",
+    "stack": "node examples/04-stack/app.js",
+    "scope": "node examples/05-scope/app.js",
+    "commonjs": "node examples/06-commonjs/app.js",
+    "redis": "node examples/07-fake-redis/app.js",
+    "event-loop": "node examples/08-event-loop/app.js",
+    "async-stack": "node examples/09-async-stack/app.js",
+    "service": "node examples/10-service-project/server.js",
+    "service:request": "node examples/10-service-project/request.js",
+    "service:test": "node examples/10-service-project/self-test.js",
+    "supervisor": "node examples/11-supervisor/supervisor.js",
+    "lab:01": "node labs/01-sync-order-bug/app.js",
+    "lab:02": "node labs/02-cache-key-bug/app.js",
+    "lab:03": "node labs/03-service-stale-cache/app.js",
+    "lab:04": "node labs/04-multitenant-cache-leak/app.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
